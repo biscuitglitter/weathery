@@ -35,3 +35,45 @@ p, h1, h2, h3, h4, h5, h6 {
   overflow-wrap: break-word;
   hyphens: auto;
 }
+
+.container {
+  top: 0;
+  bottom: 0;
+  margin:550px;
+  margin-top: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 400px;
+}
+
+.celcius {
+  color: orange;
+}
+
+input {
+  border: 1px solid black;
+  outline: none;
+  width: 150px;
+}
+
+button {
+  background: #fff;
+  color: black;
+  outline: none;
+  border: 1px solid black;
+  margin-left: 10px;
+}
+
+form {
+  display: flex;
+  flex-direction: row;
+  width: 250px;
+}
+
+.data {
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

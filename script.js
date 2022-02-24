@@ -1,9 +1,31 @@
 "use strict";
 
-const container = document.createElement("div")
-container.classList.add("container")
+const loadContent = () => {
+    const container = document.createElement("div")
+    container.classList.add("container")
+    document.body.appendChild(container)
 
-document.body.appendChild(container)
+    const form = document.createElement("form")
+    const label = document.createElement("label")
+    label.for = "location";
+    const input = document.createElement("input")
+    input.type = "text"
+    input.id= "location"
+    const button = document.createElement("button")
+    button.innerText = "Look"
+
+    container.appendChild(form)
+    form.appendChild(label)
+    form.appendChild(input)
+    form.appendChild(button)
+}
+
+const celsiusToFahrenheit = celsius => celsius * 9/5 + 32;
+
+const fahrenheitToCelsius = fahrenheit => (fahrenheit - 32) * 5/9;
+
+celsiusToFahrenheit()
+fahrenheitToCelsius()
 
 async function fetchData(url){
     let response = await fetch(url);
@@ -11,8 +33,39 @@ async function fetchData(url){
     return data;
 }
 
-const renderLocation = () => {
-    
+const renderLocation = (city, celcius, fahrenheit, feelsLike, description) => {
+    let container = document.querySelector(".container")
+    const div = document.createElement("div")
+    div.classList.add("data")
+
+    const cities = document.createElement("h2")
+    cities.classList.add("city")
+    cities.innerText = city
+
+    const temp = document.createElement("h3")
+    temp.classList.add("celcius")
+    temp.innerText = celcius
+
+    const weather = document.createElement("h4")
+    weather.classList.add("mainweather")
+    weather.innerText = description
+
+    container.appendChild(div)
+    div.appendChild(cities)
+    div.appendChild(temp)
+    div.appendChild(weather)
+}
+
+const toCelcius = (kelvin) => {
+    let number = kelvin - 273.15
+    let result = Math.trunc(number)
+    return result
+}
+
+const toFahrenheit = (kelvin) => {
+    let number = (kelvin * 9 / 5) - 459.67 
+    let result = Math.trunc(number)
+    return result
 }
 
 async function showPosition(pos) {
@@ -23,14 +76,15 @@ async function showPosition(pos) {
     const lon = coordinates[1]
     let url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=81353d18461f4d7562760894feb3ada0`;
     let data = await fetchData(url);
-    let temperature = data.main.temp
-    let name = data.name
-    let country = data.sys.country
-    let mainweather = data.weather[0]["main"]
+    let kelvin = data.main.temp
+    let celcius = toCelcius(`${kelvin}`)
+    let fahrenheit = toFahrenheit(`${kelvin}`)
+    let city = data.name
+    let feelsLike = data.main.feels_like
     let description = data.weather[0]["description"]
-    renderLocation(temperature, name, country, mainweather, description)
+    console.log(feelsLike)
+    renderLocation(city, celcius, fahrenheit, feelsLike, description)
 }
-
 
 function getLocation() {
     if (navigator.geolocation) {
@@ -40,3 +94,5 @@ function getLocation() {
     }
 }
 getLocation()
+
+window.onload = loadContent()
