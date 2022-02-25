@@ -5,12 +5,17 @@ const loadContent = () => {
     container.classList.add("container")
     document.body.appendChild(container)
 
+    const cards = document.createElement("div")
+    cards.classList.add("cards")
+    document.body.appendChild(cards)
+
     const form = document.createElement("form")
+    form.id = "form"
     const label = document.createElement("label")
     label.for = "location";
     const input = document.createElement("input")
     input.type = "text"
-    input.id= "location"
+    input.id = "location"
     const button = document.createElement("button")
     button.innerText = "Look"
 
@@ -20,21 +25,8 @@ const loadContent = () => {
     form.appendChild(button)
 }
 
-const celsiusToFahrenheit = celsius => celsius * 9/5 + 32;
-
-const fahrenheitToCelsius = fahrenheit => (fahrenheit - 32) * 5/9;
-
-celsiusToFahrenheit()
-fahrenheitToCelsius()
-
-async function fetchData(url){
-    let response = await fetch(url);
-    let data = await response.json();
-    return data;
-}
-
-const renderLocation = (city, celcius, fahrenheit, feelsLike, description) => {
-    let container = document.querySelector(".container")
+const renderLocation = (city, celcius, fahrenheit, description) => {
+    let cards = document.querySelector(".cards")
     const div = document.createElement("div")
     div.classList.add("data")
 
@@ -44,16 +36,41 @@ const renderLocation = (city, celcius, fahrenheit, feelsLike, description) => {
 
     const temp = document.createElement("h3")
     temp.classList.add("celcius")
-    temp.innerText = celcius
+    temp.classList.add("active")
+    temp.innerText = celcius + " °C"
+
+    const temp2 = document.createElement("h3")
+    temp2.classList.add("fahrenheit")
+    temp2.innerText = fahrenheit + " °F"
 
     const weather = document.createElement("h4")
     weather.classList.add("mainweather")
     weather.innerText = description
 
-    container.appendChild(div)
+    cards.appendChild(div)
     div.appendChild(cities)
     div.appendChild(temp)
+    div.appendChild(temp2)
     div.appendChild(weather)
+    unitToggle()
+}
+
+const unitToggle = () => {
+    let datas = document.querySelectorAll(".data")
+datas.forEach(data => {
+    data.addEventListener("click", () => {
+        console.log("working!")
+            if (data.hasChildNodes()) {
+  if (data.childNodes[1].className === "celcius active") {
+        data.childNodes[2].classList.add("active")
+        data.childNodes[1].classList.remove("active")
+  } else if (data.childNodes[2].className === "fahrenheit active") {
+    data.childNodes[1].classList.add("active")
+    data.childNodes[2].classList.remove("active")
+  }
+}
+    })
+})
 }
 
 const toCelcius = (kelvin) => {
@@ -63,9 +80,36 @@ const toCelcius = (kelvin) => {
 }
 
 const toFahrenheit = (kelvin) => {
-    let number = (kelvin * 9 / 5) - 459.67 
+    let number = (kelvin * 9 / 5) - 459.67
     let result = Math.trunc(number)
     return result
+}
+
+const userInput = () => {
+    let button = document.querySelector("button")
+    button.addEventListener("click", (e) => {
+        e.preventDefault()
+        let loc = document.querySelector("input").value
+        showLocation(loc)
+        document.querySelector("input").value = "";
+    })
+}
+
+async function fetchData(url) {
+    let response = await fetch(url);
+    let data = await response.json();
+    return data;
+}
+
+async function showLocation(loc) {
+    let url = `https://api.openweathermap.org/data/2.5/weather?q=${loc}&appid=81353d18461f4d7562760894feb3ada0`
+    let data = await fetchData(url)
+    let kelvin = data.main.temp
+    let celcius = toCelcius(`${kelvin}`)
+    let fahrenheit = toFahrenheit(`${kelvin}`)
+    let city = data.name
+    let description = data.weather[0]["description"]
+    renderLocation(city, celcius, fahrenheit, description)
 }
 
 async function showPosition(pos) {
@@ -80,19 +124,19 @@ async function showPosition(pos) {
     let celcius = toCelcius(`${kelvin}`)
     let fahrenheit = toFahrenheit(`${kelvin}`)
     let city = data.name
-    let feelsLike = data.main.feels_like
     let description = data.weather[0]["description"]
-    console.log(feelsLike)
-    renderLocation(city, celcius, fahrenheit, feelsLike, description)
+    renderLocation(city, celcius, fahrenheit, description)
 }
 
 function getLocation() {
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition);
-    } else { 
-        console.log("Geolocation is not supported by this browser.");
+        navigator.geolocation.getCurrentPosition(showPosition)
+    } else {
+        console.log("alert")
     }
 }
-getLocation()
 
 window.onload = loadContent()
+window.onload = getLocation()
+window.onload = userInput()
+

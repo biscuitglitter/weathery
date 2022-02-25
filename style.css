@@ -39,15 +39,23 @@ p, h1, h2, h3, h4, h5, h6 {
 .container {
   top: 0;
   bottom: 0;
-  margin:550px;
+  margin-left: 500px;
+  margin-right: 500px;
   margin-top: 200px;
   display: flex;
   flex-direction: column;
   gap: 10px;
   width: 400px;
+  margin-bottom: 25px;
 }
 
-.celcius {
+.cards {
+  display: flex;
+  margin-left: 200px;
+  gap: 15px;
+}
+
+.celcius, .fahrenheit {
   color: orange;
 }
 
@@ -72,8 +80,24 @@ form {
 }
 
 .data {
-  width: 200px;
+  width: 150px;
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+.city {
+  font-size: 20px;
+}
+
+h3:hover {
+  cursor: pointer;
+}
+
+h3 {
+  display: none;
+}
+
+h3.active {
+  display: flex;
 }
