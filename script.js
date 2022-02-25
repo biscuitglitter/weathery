@@ -5,9 +5,9 @@ const loadContent = () => {
     container.classList.add("container")
     document.body.appendChild(container)
 
-    const cards = document.createElement("div")
-    cards.classList.add("cards")
-    document.body.appendChild(cards)
+    const card = document.createElement("div")
+    card.classList.add("card")
+    document.body.appendChild(card)
 
     const form = document.createElement("form")
     form.id = "form"
@@ -25,41 +25,42 @@ const loadContent = () => {
     form.appendChild(button)
 }
 
-const renderLocation = (city, celcius, fahrenheit, description) => {
-    let cards = document.querySelector(".cards")
+const renderShow = () => {
+    let card = document.querySelector(".card")
     const div = document.createElement("div")
     div.classList.add("data")
 
     const cities = document.createElement("h2")
     cities.classList.add("city")
-    cities.innerText = city
 
     const temp = document.createElement("h3")
     temp.classList.add("celcius")
     temp.classList.add("active")
-    temp.innerText = celcius + " °C"
 
     const temp2 = document.createElement("h3")
     temp2.classList.add("fahrenheit")
-    temp2.innerText = fahrenheit + " °F"
 
     const weather = document.createElement("h4")
     weather.classList.add("mainweather")
-    weather.innerText = description
 
-    cards.appendChild(div)
+    card.appendChild(div)
     div.appendChild(cities)
     div.appendChild(temp)
     div.appendChild(temp2)
-    div.appendChild(weather)
+    div.appendChild(weather) 
     unitToggle()
 }
 
-const unitToggle = () => {
-    let datas = document.querySelectorAll(".data")
-datas.forEach(data => {
+const renderLocation = (city, celcius, fahrenheit, description) => {   
+    document.querySelector(".city").innerText = city
+    document.querySelector(".celcius").innerText = celcius + " °C"
+    document.querySelector(".fahrenheit").innerText = fahrenheit + " °F"
+    document.querySelector(".mainweather").innerText = description
+}
+
+const unitToggle = () => { 
+    let data = document.querySelector(".data")
     data.addEventListener("click", () => {
-        console.log("working!")
             if (data.hasChildNodes()) {
   if (data.childNodes[1].className === "celcius active") {
         data.childNodes[2].classList.add("active")
@@ -70,7 +71,6 @@ datas.forEach(data => {
   }
 }
     })
-})
 }
 
 const toCelcius = (kelvin) => {
@@ -139,4 +139,5 @@ function getLocation() {
 window.onload = loadContent()
 window.onload = getLocation()
 window.onload = userInput()
+window.onload = renderShow()
 

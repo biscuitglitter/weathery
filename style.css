@@ -49,10 +49,12 @@ p, h1, h2, h3, h4, h5, h6 {
   margin-bottom: 25px;
 }
 
-.cards {
+.card {
   display: flex;
-  margin-left: 200px;
-  gap: 15px;
+  margin-left: 500px;
+  margin-right: 150px;
+  width: 500px;
+  height: 500px;
 }
 
 .celcius, .fahrenheit {
@@ -63,6 +65,17 @@ input {
   border: 1px solid black;
   outline: none;
   width: 150px;
+}
+
+
+.data {
+  width: 150px;
+  display: flex;
+  padding-top: 0;
+  flex-direction: column;
+  gap: 10px;
+  width: 120px;
+  height: 120px;
 }
 
 button {
@@ -79,15 +92,9 @@ form {
   width: 250px;
 }
 
-.data {
-  width: 150px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
 
 .city {
-  font-size: 20px;
+  font-size: 25px;
 }
 
 h3:hover {
@@ -101,3 +108,4 @@ h3 {
 h3.active {
   display: flex;
 }
+
